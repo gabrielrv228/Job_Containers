@@ -49,3 +49,23 @@ docker images |grep  app-normal
 app-normal latest 9a17a7e1d1fd About a minute ago 228MB
 ```
 - As you can see here when we use a build without multi-stage the image size goes up to 228MB.
+
+- To automate the build and configuration of the deployment we are going to make use of docker compose
+- We create the `docker-compose.yml`
+```yaml
+version: "3.9"
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    links:
+      - redis
+  redis:
+    image: redis
+```
+- We deploy it with:
+```
+docker-compose up
+```
+- And we can access it in http://localhost:5000. 

@@ -14,4 +14,4 @@ docker build -t app-normal .
 docker images |grep  app-normal
 app-normal latest 9a17a7e1d1fd About a minute ago 228MB
 ```
--As you can see here when we use a normal  build the image size goes up to 228MB 
+- As you can see here when we use a normal  build the image size goes up to 228MB 

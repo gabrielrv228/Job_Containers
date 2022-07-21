@@ -1,4 +1,10 @@
 # Job_Containers
+## Contents:
+- `app/` Contains the aplication.
+- `app/src/` Contains the source code of the app(`flask-counter` in this case). Includes also the `docker-compose`.
+- `app/k8s/` Contains the manifests to test the app in Kubernetes.
+- `app/charts/` Contains the Helm chart designed to deploy the aplication with Helm.
+
 ## Description:
 This work consists in the deployment of a sample web app with redis and flask making use of docker containers.
 
@@ -6,7 +12,7 @@ This work consists in the deployment of a sample web app with redis and flask ma
 ```
 docker build -t app-multistage .
 docker images |grep  app-multistage
-app-multistage latest b5ed0d01569f About a minute ago   78MB
+app-multistage latest b5ed0d01569f About a minute ago 78MB
 ```
 - We can see that when we use a multi stage build the docker image size is 78MB, in this case, a 66.5% less than the normal build. 
 ```

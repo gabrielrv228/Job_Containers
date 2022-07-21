@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app.fullname" . }}-flask
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ template "app.name" . }}-flask
+      {{- include "app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "app.name" . }}-flask
+        {{- include "app.selectorLabels" . | nindent 8 }}
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5000"
+        prometheus.io/scrape: "true"
+    spec:
+      containers:
+      - image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        name: flask
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 5000
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 5000
+        env:
+          - name: REDIS_HOST
+            value: {{ .Release.Name }}-redis-master
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-redis
+                key: redis-password
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu:  {{ .Values.resources.requests.cpu }}
+          limits:
+            memory:  {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+      # Intentaremos que los PODs de nuestra aplicación estén lo más cerca posible
+      # de los pods de la base de datos.
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: master
+                  app.kubernetes.io/instance: {{ .Release.Name }}
+                  app.kubernetes.io/name: redis
+              topologyKey: "kubernetes.io/hostname"
+        # Intentaremos que los PODs de nuestra aplicación estén lo más alejados
+        # de los pods de la la misma aplicación (otras réplicas).
+        podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                    matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                      - {{ template "app.name" . }}-flask
+                topologyKey: "kubernetes.io/hostname"

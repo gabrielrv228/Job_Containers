@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: flask
+  name: flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: flask
+  template:
+    metadata:
+      labels:
+        run: flask
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5000"
+        prometheus.io/scrape: "true"
+    spec:
+      containers:
+      - image: eedugon/flask-counter:1.0
+        name: flask
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 5000
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 5000
+        env:
+          - name: REDIS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: redis.host
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: redis.port
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: password
+        resources:
+          requests:
+            memory: 128Mi
+            cpu: 100m
+          limits:
+            memory: 256Mi
+            cpu: 200m
+
+      # Intentaremos que los PODs de nuestra aplicación estén lo más cerca posible
+      # de los pods de la base de datos.
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - redis
+              topologyKey: "kubernetes.io/hostname"
+        podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                    matchExpressions:
+                    - key: run
+                      operator: In
+                      values:
+                      - flask
+                topologyKey: "kubernetes.io/hostname"

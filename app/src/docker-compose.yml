@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    image: eedugon/flask-counter:1.0
+    ports:
+    - "5000:5000"
+    links:
+    - redis
+  redis:
+    image: redis

@@ -75,6 +75,6 @@ services:
 docker-compose up
 ```
 - And we can access it in http://localhost:5000. 
-- Getting the logs:
-In a normal enviroment you write the logs to two files one for the error ones and other for the info ones.
+
+- For getting the logs, in a normal enviroment you write the logs to two files one for the error ones and other for the info ones.
 Due the voloatility of Docker containers we have to write the logs to stdout and stderr.

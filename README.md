@@ -8,9 +8,9 @@
 ## Description:
 This work consists in the deployment of a sample web app with redis and flask making use of docker containers and kubernetes with helm. 
 In this project we deploy it in three different ways: 
-1-Using Docker-compose 
-2-Using Kubernetes manifests 
-3-Using Helm charts
+- 1-Using Docker-compose 
+- 2-Using Kubernetes manifests 
+- 3-Using Helm charts
 
 ## Instructions:
 

@@ -77,4 +77,21 @@ docker-compose up
 - And we can access it in http://localhost:5000. 
 
 - For getting the logs, in a normal enviroment you write the logs to two files one for the error ones and other for the info ones.
-Due the voloatility of Docker containers we have to write the logs to stdout and stderr.
+Due the voloatility of Docker containers we have to write the logs to stdout and stderr. For this task we are going to use  [json-logging-python](https://github.com/thangbn/json-logging-python).
+we add the dependencies and json_logging to requierements.txt
+
+```python
+import logging, sys, json_logging
+```
+
+
+```python
+json_logging.init_flask(enable_json=True)
+json_logging.init_request_instrument(app)
+
+# init the logger as usual
+logger = logging.getLogger("logger")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler(sys.stdout))
+```
+

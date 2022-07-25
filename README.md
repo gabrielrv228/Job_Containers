@@ -94,4 +94,30 @@ logger = logging.getLogger("logger")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 ```
+An example of log, is this health check in `http://localhost:5000/health/live`:
+
+```json
+{
+  "written_at": "2022-07-04T18:34:45.676Z",
+  "written_ts": 1596306885676369000,
+  "type": "request",
+  "correlation_id": "ac3cc78c-d425-11ea-adf8-0242ac110002",
+  "remote_user": "-",
+  "request": "/health/live",
+  "referer": "-",
+  "x_forwarded_for": "-",
+  "protocol": "HTTP/1.1",
+  "method": "GET",
+  "remote_ip": "172.17.0.1",
+  "request_size_b": -1,
+  "remote_host": "172.17.0.1",
+  "remote_port": 34788,
+  "request_received_at": "2022-07-04T18:34:45.676Z",
+  "response_time_ms": 0,
+  "response_status": 200,
+  "response_size_b": 2,
+  "response_content_type": "text/html; charset=utf-8",
+  "response_sent_at": "2022-07-04T18:34:45.676Z"
+}
+```
 

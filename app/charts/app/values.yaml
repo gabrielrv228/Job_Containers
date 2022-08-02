@@ -1,6 +1,6 @@
 replicas: 1
 image:
-  name: eedugon/flask-counter
+  name: repo/flask-counter
   tag: "1.0"
 resources:
   requests:
@@ -23,7 +23,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
   hosts:
-    - host: flask-helm.keepcoding.local
+    - host: flask-helm.test.local
       paths:
       - "/"
 

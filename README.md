@@ -129,5 +129,4 @@ An example of log, is this health check in `http://localhost:5000/health/live`:
 - `configmap` will be used to store the application configuration.
 - `secret` will also be used to store the application configuration, but in this case only sensitive values (for example, the Redis password).
 
-Translated with www.DeepL.com/Translator (free version)
 

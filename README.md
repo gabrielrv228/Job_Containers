@@ -122,11 +122,11 @@ An example of log, is this health check in `http://localhost:5000/health/live`:
 ```
 ## Kubernetess manifests:
 - `app-deployment` which is going to define the configuration of the application PODs.
-- redis-deployment` which will define the redis POD configuration (the solution does not support multiple redis pods).
-- service` will allow us to direct traffic to the PODs within the cluster.
-- persistentvolumeclaim` will allow us to request a persistent disk that we will use for the database (Redis).
-- ingress` to expose our application outside the cluster and accessible from the internet.
-- configmap` will be used to store the application configuration.
+- `redis-deployment` which will define the redis POD configuration (the solution does not support multiple redis pods).
+- `service` will allow us to direct traffic to the PODs within the cluster.
+- `persistentvolumeclaim` will allow us to request a persistent disk that we will use for the database (Redis).
+- `ingress` to expose our application outside the cluster and accessible from the internet.
+- `configmap` will be used to store the application configuration.
 - `secret` will also be used to store the application configuration, but in this case only sensitive values (for example, the Redis password).
 
 Translated with www.DeepL.com/Translator (free version)

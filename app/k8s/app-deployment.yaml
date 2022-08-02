@@ -19,7 +19,7 @@ spec:
         prometheus.io/scrape: "true"
     spec:
       containers:
-      - image: eedugon/flask-counter:1.0
+      - image: repo/flask-counter:1.0
         name: flask
         livenessProbe:
           httpGet:
@@ -53,8 +53,7 @@ spec:
             memory: 256Mi
             cpu: 200m
 
-      # Intentaremos que los PODs de nuestra aplicación estén lo más cerca posible
-      # de los pods de la base de datos.
+     
       affinity:
         podAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
